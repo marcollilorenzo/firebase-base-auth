@@ -6,7 +6,7 @@ import { Link, useHistory } from "react-router-dom"
 export default function Login() {
   const emailRef = useRef()
   const passwordRef = useRef()
-  const { login } = useAuth()
+  const { login,loginWithGoogle } = useAuth()
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
   const history = useHistory()
@@ -25,6 +25,22 @@ export default function Login() {
 
     setLoading(false)
   }
+
+
+
+  const handleSubmitWithGoogle = async () => {
+    try {
+      setError("")
+      setLoading(true)
+      const res =  await loginWithGoogle()
+      console.log(res)
+      history.push("/")
+    } catch {
+      setError("Failed to log in")
+    }
+
+    setLoading(false)
+}
 
   return (
     <>
@@ -45,6 +61,11 @@ export default function Login() {
               Log In
             </Button>
           </Form>
+
+          <Button onClick={handleSubmitWithGoogle} className="w-100">
+              Log In with google
+            </Button>
+
           <div className="w-100 text-center mt-3">
             <Link to="/forgot-password">Forgot Password?</Link>
           </div>
